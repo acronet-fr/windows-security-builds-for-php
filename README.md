@@ -1,6 +1,6 @@
 # Acronet security builds for PHP 7.4 / 8.0 / 8.1 on Windows (CVE-2026-109618, CVE-2026-109619)
 
-**Unofficial** Windows x64 Thread Safe builds of PHP 7.4.33, 8.0.30 and 8.1.34, compiled from the
+**Unofficial** Windows x64 builds (Thread Safe and Non Thread Safe) of PHP 7.4.33, 8.0.30 and 8.1.34, compiled from the
 official PHP source patches for the two critical remote code execution vulnerabilities disclosed on
 21 October 2026 (often called "php2shell").
 
@@ -26,6 +26,17 @@ See the [Releases](../../releases) page. Each archive is a drop-in replacement f
 | `7.4.33-CVE-2026-10-22-ACRONET` | Visual C++ 2017 (VC15, toolset 14.16) | `API20190902,TS,VC15` | official 7.4.33 |
 | `8.0.30-CVE-2026-10-22-ACRONET` | Visual C++ 2019 (VS16) | `API20200930,TS,VS16` | official 8.0.x |
 | `8.1.34-CVE-2026-10-22-ACRONET` | Visual C++ 2019 (VS16) | `API20210902,TS,VS16` | official 8.1.x |
+
+Each version comes in two editions, exactly like the official downloads:
+
+| Edition | Archive | Use it with |
+|---|---|---|
+| **Thread Safe (TS)** | `php-<version>-CVE-2026-10-22-ACRONET-Win32-<crt>-x64.zip` | Apache with `mod_php` (`php7apache2_4.dll` / `php8apache2_4.dll`): WampServer, XAMPP |
+| **Non Thread Safe (NTS)** | `php-<version>-CVE-2026-10-22-ACRONET-nts-Win32-<crt>-x64.zip` | FastCGI (`php-cgi.exe`): IIS, Nginx, Apache with `mod_fcgid`, Laragon in FastCGI mode, command line |
+
+Pick the edition you already run (`php -i` shows `Thread Safety => enabled` or `disabled`):
+extensions built for one edition do not load in the other. NTS extension API strings are
+`API20190902,NTS,VC15`, `API20200930,NTS,VS16` and `API20210902,NTS,VS16`.
 
 The extension API and compiler match the official builds, so third-party extensions built for the
 official binaries (Xdebug, APCu, imagick...) keep loading. `PHP_VERSION_ID` is unchanged (70433,
@@ -74,6 +85,13 @@ rem 8.0 and 8.1: build\go.bat 8.0 vs16   /   build\go.bat 8.1 vs16
 `phpsdk_deps`, `buildconf`, `configure --enable-snapshot-build ...`, `nmake` and `nmake snap`.
 The archive lands in `obj-<branch>\Release_TS\`.
 
+For the Non Thread Safe edition, set `ACR_NTS=1` before calling `go.bat` (adds `--disable-zts`;
+the archive lands in `obj-<branch>-nts\Release\`):
+
+```bat
+cmd /c "set ACR_NTS=1&& build\go.bat 8.1 vs16"
+```
+
 ## Installing with WampServer
 
 1. Stop WampServer.
@@ -104,7 +122,7 @@ This product includes PHP software, freely available from <https://www.php.net/s
 
 ## En français
 
-Versions **non officielles** de PHP 7.4.33, 8.0.30 et 8.1.34 pour Windows (x64, Thread Safe),
+Versions **non officielles** de PHP 7.4.33, 8.0.30 et 8.1.34 pour Windows (x64, Thread Safe et Non Thread Safe),
 compilées à partir des correctifs publiés par l'équipe de sécurité de PHP pour les failles
 CVE-2026-109618 et CVE-2026-109619 (21/10/2026). Le projet PHP n'a publié de versions Windows
 corrigées que pour 8.2 à 8.5 ; pour 7.4, 8.0 et 8.1, seulement le correctif en code source.
@@ -115,6 +133,10 @@ corrigées que pour 8.2 à 8.5 ; pour 7.4, 8.0 et 8.1, seulement le correctif en
 - Mêmes compilateurs et même API d'extensions que les versions officielles : Xdebug et les autres
   extensions continuent de se charger.
 - Reconnaissables à leur numéro : `7.4.33-CVE-2026-10-22-ACRONET`.
+- Deux éditions, comme les versions officielles : **Thread Safe** (archive sans `nts`) pour Apache
+  avec `mod_php` (WampServer, XAMPP), **Non Thread Safe** (archive `-nts-`) pour FastCGI : IIS,
+  Nginx, Apache avec `mod_fcgid`, ligne de commande. Garder l'édition déjà installée
+  (`php -i` : `Thread Safety`), car les extensions de l'une ne se chargent pas dans l'autre.
 
 Compilées et publiées par [Acronet](https://www.acronet.fr/), agence web à Mulhouse. Le contexte,
 nos vérifications et le guide d'installation : [notre article](https://www.acronet.fr/blog/faille-php2shell-php-7-4-windows-corrige-a10.html).
