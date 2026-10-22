@@ -87,6 +87,9 @@ Keep the folder name purely numeric (`php7.4.33`): WampServer reads the version 
 
 ## About
 
+Background, client checks and installation guide (in French):
+[Faille php2shell : PHP 7.4, 8.0 et 8.1 corrigés pour Windows](https://www.acronet.fr/blog/faille-php2shell-php-7-4-windows-corrige-a10.html).
+
 Built and published by [Acronet](https://www.acronet.fr/), a web agency in Mulhouse (France),
 for its own development machines first. Issues are welcome, but no long term maintenance is
 promised: if another security fix is published for these branches, a new build may or may not
@@ -113,4 +116,5 @@ corrigées que pour 8.2 à 8.5 ; pour 7.4, 8.0 et 8.1, seulement le correctif en
   extensions continuent de se charger.
 - Reconnaissables à leur numéro : `7.4.33-CVE-2026-10-22-ACRONET`.
 
-Compilées et publiées par [Acronet](https://www.acronet.fr/), agence web à Mulhouse.
+Compilées et publiées par [Acronet](https://www.acronet.fr/), agence web à Mulhouse. Le contexte,
+nos vérifications et le guide d'installation : [notre article](https://www.acronet.fr/blog/faille-php2shell-php-7-4-windows-corrige-a10.html).
